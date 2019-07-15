@@ -1,0 +1,1 @@
+console.log('hello from static/index.js' )
