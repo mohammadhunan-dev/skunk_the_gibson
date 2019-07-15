@@ -14,3 +14,4 @@ skunk the gibson repo
  * rootDir/static contains all of our front end js (for instance DOM Manipulation) and css
  * rootDir/venv is the python folder that holds dependencies (Don't manually write to this folder)
  * rootDir/app.py is the root python file of our project
+  * rootDir/requirements.txt is the dependency doc for our project
