@@ -9,4 +9,4 @@
 # extras
 data/*
 log/*
-
+*.swp
