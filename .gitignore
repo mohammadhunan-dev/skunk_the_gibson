@@ -4,3 +4,9 @@
 
 # python dependencies
 /venv/
+
+
+# extras
+data/*
+log/*
+
