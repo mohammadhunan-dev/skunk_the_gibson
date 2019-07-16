@@ -1,0 +1,63 @@
+[
+    {
+        "name": "Margherita", 
+        "toppings": ["mozzarella", "basil", "tomato sauce"],  
+        "style": "Neapolitan", 
+        "rating": 8,
+        "vegetarian": true  
+    },
+    {
+        "name": "Greek", 
+        "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+        "style": "Greek",  
+        "rating": 7.5,
+        "vegetarian": true 
+    },
+    {
+        "name": "Pepperoni", 
+        "toppings": ["cheese", "tomato sauce", "pepperoni"],
+        "style": "Sicilian", 
+        "rating": 4, 
+        "vegetarian": false
+    },
+    {
+        "name": "Deep Dish", 
+        "toppings": ["tomato sacue", "sausage"],  
+        "style": "Chicago", 
+        "vegetarian": false 
+    },
+    {
+        "name": "Hawaiian", 
+        "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
+        "style": "NYC",  
+        "rating": 9, 
+        "vegetarian": false  
+    },
+    {
+        "name": "White", 
+        "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
+        "style": "NYC",  
+        "rating": 10, 
+        "vegetarian": true 
+    },
+    {
+        "name": "Broccoli Rabe", 
+        "toppings": ["sausage", "broccoli rabe", "cheese"], 
+        "crust": "St. Louis",   
+        "rating": 1
+    },
+    {
+        "name": "Artichoke", 
+        "toppings": ["cheese", "garlic", "artichoke"], 
+        "crust": "Neapolitan", 
+        "rating": 9, 
+        "vegetarian": true  
+    },
+    {
+        "name": "Vegetable", 
+        "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+        "crust": "NYC", 
+        "rating": 8.5, 
+        "vegetarian": true 
+    }
+]
