@@ -59,5 +59,12 @@
         "crust": "NYC", 
         "rating": 8.5, 
         "vegetarian": true 
+    }, 
+    {
+        "name": "Anchovy", 
+        "toppings": ["cheese", "olives", "tomato sauce", "anchovies"], 
+        "crust": "Greek", 
+        "rating": 1, 
+        "vegetarian": false 
     }
 ]

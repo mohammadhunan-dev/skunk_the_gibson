@@ -1,0 +1,61 @@
+[
+    {
+        "name": "baseball", 
+        "origin": "USA", 
+        "division": "inning",
+        "equipment": ["bat", "helmet", "ball", "bases"]
+    },
+    {
+        "name": "cricket", 
+        "origin": "England", 
+        "division": "inning",
+        "equipment": ["bat", "ball", "stumps", "bail"]
+    }, 
+    {
+        "name": "basketball", 
+        "origin": "USA", 
+        "division": "quarter",
+        "equipment": ["ball"] 
+    },
+    {
+        "name": "swimming", 
+        "origin": "England", 
+        "division": "race",
+        "equipment": ["goggles", "swim cap"]
+    },
+    {
+        "name": "tennis", 
+        "origin": "France", 
+        "division": "set",
+        "equipment": ["racquet", "ball"]
+    },
+    {
+        "name": "gymnastics", 
+        "origin": "Germany", 
+        "equipment": ["bars", "balance beam", "vault"]
+    },
+    {
+        "name": "American Football", 
+        "origin": "USA",  
+        "division": "quarter",
+        "equipment": ["ball", "helmet"]
+    },
+    {
+        "name": "badminton", 
+        "origin": "England", 
+        "division": "sets",
+        "equipment": ["raquet", "shuttlecock"]
+    },
+    {
+        "name": "volleyball", 
+        "origin": "USA", 
+        "division": "set",
+        "equipment": ["ball"]
+    },
+    {
+        "name": "soccer", 
+        "origin": "England", 
+        "division": "halves",
+        "equipment": ["ball"]
+    }
+]
