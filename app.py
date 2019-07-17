@@ -1,9 +1,15 @@
 from flask import Flask, request, send_from_directory, render_template, json
-from flask_pymongo import PyMongo
+# from flask_pymongo import PyMongo
+import PyMongo
 
 app = Flask(__name__,  static_url_path='/views', static_folder="static")
-app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
-mongo = PyMongo(app)
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/test"
+# mongo = PyMongo(app)
+
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["test"]  
+
 
 
 @app.route('/')
@@ -35,13 +41,20 @@ def hello():
 
 @app.route('/collections/', methods=['POST'])
 def collection_data():
-    data = request.data
-    dataDict = json.loads(data)
-    db = dataDict['db']
-    username = dataDict['user']
-    password = dataDict['password']
+    # data = request.data
+    # dataDict = json.loads(data) 
+    # # db = dataDict['db']
+    # # username = dataDict['user']
+    # # password = dataDict['password'] 
 
-    return 'TODO: fetch collections and get document counts for each'
+    collection_names = db.list_collection_names() 
+    collection_dict = {} 
+    for coll in collection_names: 
+        collection_dict[coll] = db[coll].count()
+
+    collection_dict.pop('filters')
+
+    return collection_dict 
 
 @app.route('/documents/', methods=['GET'])
 def document_data():
