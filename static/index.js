@@ -1,5 +1,22 @@
 console.log('hello from static/index.js!!' );
 
+
+AFRAME.registerComponent('raycast-info', {
+  init: function () {
+    this.el.addEventListener('raycaster-intersected', function (evt) {
+      var el = evt.target;
+// May get two intersection events per tick; same element, different faces.
+      el.setAttribute('material', 'color', '#7f7');
+    });
+
+    this.el.addEventListener('raycaster-intersected-cleared', function (evt) {
+      var el = evt.target;
+// May get two intersection events per tick; same element, different faces.
+      el.setAttribute('material', 'color', 'white');
+    });
+  }
+});
+
 AFRAME.registerComponent('initial-scene-load-event', {
     schema: {
       color: {default: 'orange'}
@@ -34,7 +51,7 @@ AFRAME.registerComponent('load-document-event', {
         })
         .then((response) => {
           response.json().then((data) => {
-            switchScene(collectionName, data);
+            loadDocumentView(collectionName, data);
 
           })
         })
@@ -46,12 +63,24 @@ AFRAME.registerComponent('load-document-event', {
     }
   });
 
-const switchScene = (collectionName, data) => {
+const loadDocumentView = (collectionName, data) => {
   $('.collection-wrapper').each((index, element) => {
     // element.setAttribute('visible',false);
     element.remove();
-  
+
   })
+  $('#skunkwrap').remove();
+  $("#collectionlight").remove();
+  $("#collectioncamera").remove();
+  const cameraString = `<a-entity id="documentcamera" movement-controls="fly: true" position="-3 3 4">
+  <a-entity camera position="0 1 4" 
+    look-controls="pointerLockEnabled: true" 
+    wasd-controls="acceleration:200"
+    >
+  </a-entity>
+</a-entity>`;
+  $("a-scene").append(cameraString)
+
   const documentWrapper = $('.documents-wrapper');
 
 
@@ -79,6 +108,52 @@ const switchScene = (collectionName, data) => {
       }
     documentWrapper.html(documentWrapper.html() + htmlDocumentString)
     })
+
+
+    const exitDoorHtmlString = `
+    <a-entity id="exit-doorway"  position="7 0 ${z - 4}" rotation="0 320 0">
+            <a-entity gltf-model="#door" scale="1.5 1.5 1.5" animation-mixer="clip: *;"></a-entity>
+            <a-text position="-2 3.5 0.8" scale="2.2 2.2 2.2"  value="EXIT COLLECTION" side="double"></a-text>
+
+            <a-entity position="1.9 1.4 0.1">
+              <a-entity gltf-model="#picture-frame" scale="0.015 0.015 0.015"></a-entity>
+              <a-plane src="#skunkapalooza" position="0 0.57 0.01" width="1.25" height="0.79"></a-plane>
+            </a-entity>
+
+        </a-entity>
+    </a-entity>`;
+    $("a-scene").append(exitDoorHtmlString);
+
+    const filterGroupString = `
+    <a-entity id="filter-group" position="-7 6 0">
+    <a-entity id="filter-1">
+      <a-entity mixin="filter" rotation="180 0 0" material="color: green"></a-entity>
+      <a-text value="all" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
+    </a-entity>
+
+    <a-entity id="filter-2" position="3 0 0">>
+      <a-entity mixin="filter" rotation="180 0 0" material="color: gold"></a-entity>
+      <a-text value="cheese" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
+    </a-entity>
+    <a-entity id="filter-3" position="6 0 0">
+      <a-entity mixin="filter" rotation="180 0 0" material="color: red"></a-entity>
+      <a-text value="$gte 6 stars" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
+    </a-entity>
+  </a-entity>
+    `;
+    $("a-scene").append(filterGroupString);
+
+    const lightHtmlString = `<a-light type="point" color="blue" position="0 25 1"></a-light>`;
+    $("a-scene").append(lightHtmlString)
+
+
+
 }
 
+const loadCollectionView = () => { 
+  // switch back to collection view
+}
 
+const generateDoor = () => {
+
+}
