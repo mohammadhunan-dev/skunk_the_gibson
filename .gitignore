@@ -10,6 +10,10 @@
 
 
 # extras
-data/*
-log/*
+/data/
+/log/
+/data/*
+/log/*
 *.swp
+
+
