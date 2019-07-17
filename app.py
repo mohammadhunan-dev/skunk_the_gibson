@@ -77,7 +77,7 @@ def document_data():
         },
         {
             "name": "Deep Dish", 
-            "toppings": ["tomato sacue", "sausage"],  
+            "toppings": ["tomato sauce", "sausage"],  
             "style": "Chicago", 
             "vegetarian": "false" 
         },
@@ -110,13 +110,12 @@ def document_data():
         },
         {
             "name": "Vegetable", 
-            "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+            "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sauce", "cheese"], 
             "crust": "NYC", 
             "rating": 8.5, 
             "vegetarian": "true" 
         }
     ]
-
     app.logger.info(doc_data)
 
 

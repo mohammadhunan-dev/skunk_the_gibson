@@ -14,19 +14,17 @@
 </head>
 <body>
 
-    <a-scene class="ascene">
+  <a-scene class="ascene">
         <a-assets>
           <a-asset-item id="skunk" src="{{ url_for('static', filename='models/skunk/scene.gltf') }}"></a-asset-item>
 
           <a-mixin id="outer-cube" geometry="primitive: box" scale="1.26 1.26 1.26" rotation="0 0 0" material="color: white; opacity: 0.5; transparent: true"></a-mixin>
           <a-mixin id="inner-cube" geometry="primitive: box" scale="0.9 0.9 0.9" rotation="0 0 0" ></a-mixin>
           <a-mixin id="wood-crate" material="src: {{ url_for('static', filename='img/mongo-crate.jpg') }}"></a-mixin>
-
           <a-mixin id="y-anim" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"></a-mixin>
-          <a-mixin id="walkaround-anim" animation="property: rotation; to: 0 0 360; dur: 30000; loop: true;"></a-mixin>
         </a-assets>
 
-        <a-entity environment="preset: arches; skyType: atmosphere"></a-entity>
+        <a-entity environment="preset: arches; skyType: atmosphere; dressingAmount: 1"></a-entity>
 
         <a-entity mixin="y-anim" position="0 0.1 -5">
           <a-entity gltf-model="#skunk" scale="0.3 0.3 0.3" position="0 0 -8"></a-entity>
@@ -34,14 +32,17 @@
 
         {% set leftPos = (-1 * boxes|length) + 1 %}
         {% for n in boxes %}
-        <a-entity position="{{ leftPos + (2 * loop.index0) }} 1 -4">
-          <a-text value="{{n['collectionName']}}" position="-0.5 1.0 0"></a-text>
+        <a-entity position="{{ leftPos + (2 * loop.index0) }} 1.5 -4">
+          <a-text value="{{n['collectionName']}}" position="-0.5 1.0 0" side="double"></a-text>
           <a-entity id="box-{{loop.index0}}" mixin="y-anim">
             <a-entity mixin="outer-cube" material="color: {{n['color']}}"></a-entity>
             <a-entity mixin="inner-cube wood-crate"></a-entity>
           </a-entity>
         </a-entity>
         {% endfor %}
+
+
+        <a-light type="directional" color="white" position="0 25 0" rotation="-90 0 0" intensity="0.3"></a-light>
         <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 200" user-height="0"></a-camera>
     </a-scene>
 
