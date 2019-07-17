@@ -9,20 +9,23 @@
 
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
-
-
+    <script type = "text/javascript" src = "{{ url_for('static', filename = 'index.js') }}?u={{last_updated}}" ></script>
 </head>
 <body>
 
-    <a-scene class="ascene">
-        <a-entity environment="preset: arches; skyType: atmosphere"></a-entity>
+    <a-scene class="ascene" initial-scene-load-event>
+        <a-entity environment="preset: forest; skyType: atmosphere"></a-entity>
+
+        <a-box id="target" box="db_a" position="-4 1 -4" rotation="0 0 0"
+            scale="1.25 1.25 1.25" color="black" load-document-event></a-box>
+
+
         {% for n in boxes %}
-          <a-box position="{{n['position']}}" rotation="{{n['rotation']}}"
+          <a-box class="collection-box" position="{{n['position']}}" rotation="{{n['rotation']}}"
             scale="{{n['scale']}}" color="{{n['color']}}"></a-box>
         {% endfor %}
-        <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 200"></a-camera>
+        <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 200"><a-cursor></a-cursor></a-camera>
     </a-scene>
 
-    <script type = "text/javascript" src = "{{ url_for('static', filename = 'index.js') }}" ></script>
 </body>
 </html>
