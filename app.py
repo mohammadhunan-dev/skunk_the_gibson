@@ -1,6 +1,7 @@
 from flask import Flask, request, send_from_directory, render_template, json
 # from flask_pymongo import PyMongo
 import PyMongo
+import json 
 
 app = Flask(__name__,  static_url_path='/views', static_folder="static")
 # app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
@@ -48,13 +49,23 @@ def collection_data():
     # # password = dataDict['password'] 
 
     collection_names = db.list_collection_names() 
-    collection_dict = {} 
+    filters = db['filters']
+    collection_names.remove('filters') 
+
+    collection_list = [] 
+
     for coll in collection_names: 
-        collection_dict[coll] = db[coll].count()
 
-    collection_dict.pop('filters')
+        coll_data = {
+            "name": coll, 
+            "count": db[coll].count() 
+            "filters": filters.find({coll: {"$exists": True}})
+        }
+        collection_list.append(coll_data) 
 
-    return collection_dict 
+    collections_dict = {"collections": collection_list}
+
+    return collections_dict  
 
 @app.route('/documents/', methods=['GET'])
 def document_data():
@@ -64,71 +75,71 @@ def document_data():
     #username = dataDict['user']
     #password = dataDict['password']
     #collection = dataDict['collection']
-    #collectionFilter = dataDict['collectionFilter']
+    #collectionFilter = dataDict['collectionFilter'] 
 
-    doc_data = [
-        {
-            "name": "Margherita", 
-            "toppings": ["mozzarella", "basil", "tomato sauce"],  
-            "style": "Neapolitan", 
-            "rating": 8,
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Greek", 
-            "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
-            "style": "Greek",  
-            "rating": 7.5,
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Pepperoni", 
-            "toppings": ["cheese", "tomato sauce", "pepperoni"],
-            "style": "Sicilian", 
-            "rating": 4, 
-            "vegetarian": "false"
-        },
-        {
-            "name": "Deep Dish", 
-            "toppings": ["tomato sacue", "sausage"],  
-            "style": "Chicago", 
-            "vegetarian": "false" 
-        },
-        {
-            "name": "Hawaiian", 
-            "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
-            "style": "NYC",  
-            "rating": 9, 
-            "vegetarian": "false"  
-        },
-        {
-            "name": "White", 
-            "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
-            "style": "NYC",  
-            "rating": 10, 
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Broccoli Rabe", 
-            "toppings": ["sausage", "broccoli rabe", "cheese"], 
-            "crust": "St. Louis",   
-            "rating": 1
-        },
-        {
-            "name": "Artichoke", 
-            "toppings": ["cheese", "garlic", "artichoke"], 
-            "crust": "Neapolitan", 
-            "rating": 9, 
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Vegetable", 
-            "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
-            "crust": "NYC", 
-            "rating": 8.5, 
-            "vegetarian": "true" 
-        }
-    ]
+    # doc_data = [
+    #     {
+    #         "name": "Margherita", 
+    #         "toppings": ["mozzarella", "basil", "tomato sauce"],  
+    #         "style": "Neapolitan", 
+    #         "rating": 8,
+    #         "vegetarian": "true"  
+    #     },
+    #     {
+    #         "name": "Greek", 
+    #         "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+    #         "style": "Greek",  
+    #         "rating": 7.5,
+    #         "vegetarian": "true" 
+    #     },
+    #     {
+    #         "name": "Pepperoni", 
+    #         "toppings": ["cheese", "tomato sauce", "pepperoni"],
+    #         "style": "Sicilian", 
+    #         "rating": 4, 
+    #         "vegetarian": "false"
+    #     },
+    #     {
+    #         "name": "Deep Dish", 
+    #         "toppings": ["tomato sacue", "sausage"],  
+    #         "style": "Chicago", 
+    #         "vegetarian": "false" 
+    #     },
+    #     {
+    #         "name": "Hawaiian", 
+    #         "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
+    #         "style": "NYC",  
+    #         "rating": 9, 
+    #         "vegetarian": "false"  
+    #     },
+    #     {
+    #         "name": "White", 
+    #         "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
+    #         "style": "NYC",  
+    #         "rating": 10, 
+    #         "vegetarian": "true" 
+    #     },
+    #     {
+    #         "name": "Broccoli Rabe", 
+    #         "toppings": ["sausage", "broccoli rabe", "cheese"], 
+    #         "crust": "St. Louis",   
+    #         "rating": 1
+    #     },
+    #     {
+    #         "name": "Artichoke", 
+    #         "toppings": ["cheese", "garlic", "artichoke"], 
+    #         "crust": "Neapolitan", 
+    #         "rating": 9, 
+    #         "vegetarian": "true"  
+    #     },
+    #     {
+    #         "name": "Vegetable", 
+    #         "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+    #         "crust": "NYC", 
+    #         "rating": 8.5, 
+    #         "vegetarian": "true" 
+    #     }
+    # ]
 
     app.logger.info(doc_data)
 

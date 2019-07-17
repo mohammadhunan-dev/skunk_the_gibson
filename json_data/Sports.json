@@ -43,7 +43,7 @@
     {
         "name": "badminton", 
         "origin": "England", 
-        "division": "sets",
+        "division": "set",
         "equipment": ["raquet", "shuttlecock"]
     },
     {
