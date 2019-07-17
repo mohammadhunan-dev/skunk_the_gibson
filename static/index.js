@@ -52,16 +52,37 @@ const switchScene = (collectionName, data) => {
   })
   const documentWrapper = $('.documents-wrapper');
 
-    data.data.forEach((document) => {
-      const htmlDocumentString = `<a-entity class="document-box" mixin="cube" position="${Math.random()} 1 0">
-      <a-text value="${document.name}" position="-1 1 0"></a-text>
+
+    const maxColumns = 5;
+    let x0 = -1 * 5 + 1; // x position
+    let y = 1; // y position
+    let z0 = -1; // z position
+
+
+    data.data.forEach((document, i) => {
+      const stringified_doc = JSON.stringify(document);
+      console.log('stringif', stringified_doc)
+      const htmlDocumentString = `<a-entity id="documentid-${i}" documentdata='${stringified_doc}' class="document-box" mixin="cube" position="${x0} 1 ${z0}">
+      <a-text value="${document.name}"  align="center" position="0 1.3 0" side="double"></a-text>
+      <a-entity mixin="doc" raycast-info></a-entity>
+      <a-text value="toppings:\n\t\t${document.toppings}\n\nstyle:\n\t\t${document.style}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
       <a-entity mixin="cube"></a-entity>
   </a-entity>`;
-
-      documentWrapper.html(documentWrapper.html() + htmlDocumentString)
-
+  // if(i ==0 ) {
+    documentWrapper.html(documentWrapper.html() + htmlDocumentString)
+  
+  // }
+      const currentElement = $(`#documentid-${i}`);
+      console.log('current element::: \t', currentElement);
+      console.log('current document data', JSON.parse($('#documentid-0').attr('documentdata')))
     })
 
+
+//     <a-entity id="{{ item['name'] }}" position="{{ ns.xPos }} 1 {{ ns.zPos }}">
+//     <a-text value="{{ item['name'] }}" align="center" position="0 1.3 0" side="double"></a-text>
+//     <a-entity mixin="doc" raycast-info></a-entity>
+//     <a-text value="toppings:\n\t\t{{ item['toppings'] }}\n\nstyle:\n\t\t{{ item['style'] }}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
+// </a-entity>
     
 
 //   $('.collection-wrapper').each((el,element) => {
