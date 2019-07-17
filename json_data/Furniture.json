@@ -1,0 +1,76 @@
+[
+    {
+        "type": "desk chair",
+        "dim": {"length": 22, "width": 20.5, "height": 30, "uom": "in"},
+        "material": ["metal", "plastic"],
+        "color": ["black", "silver"],
+        "store": "Ikea"
+    },
+    {
+        "type": "kitchen table",
+        "dim": {"length": 33, "width": 40, "height": 30, "uom": "in"},
+        "material": "wood",
+        "color": ["brown"],
+        "shape": "rectangle", 
+        "store": "Pottery Barn"            
+    }, 
+    {
+        "type": "kitchen table",
+        "dim": {"diameter": 32, "height": 30, "uom": "in"},
+        "material": "wood",
+        "color": ["black"],
+        "shape": "circle", 
+        "store": "Pottery Barn"            
+    } , 
+    {
+        "type": "couch",
+        "material": "velvet",
+        "color": ["navy", "blue"], 
+        "store": "Anthropologie"            
+    },
+    {
+        "type": "bed",
+        "size": "twin", 
+        "material": "wood",
+        "color": ["light brown"],
+        "shape": "rectangle", 
+        "store": "Wayfair"           
+    }, 
+    {
+        "type": "bed",
+        "size": "queen", 
+        "material": "metal",
+        "color": ["black"],
+        "store": "Ikea"           
+    }, 
+    {
+        "type": "armchair",
+        "dim": {"length": 32, "height": 30, "uom": "in"},
+        "material": ["twill", "wood"],
+        "color": ["brown"],
+        "shape": "rectangle", 
+        "store": "Pottery Barn"           
+    }, 
+    {
+        "type": "armchair",
+        "dim": {"diameter": 20, "width": 20 , "height": 30, "uom": "in"},
+        "material": ["suede", "wood"],
+        "color": ["grey"],
+        "store": "Target"           
+    }, 
+    {
+        "type": "coffee table",
+        "dim": {"diameter": 32, "height": 24, "uom": "in"},
+        "material": ["metal"],
+        "color": ["blue", "grey"],
+        "shape": "round", 
+        "store": "Target"           
+    },
+    {
+        "type": "bed",
+        "size": "queen", 
+        "material": ["wood"],
+        "color": "white"          
+    }
+        
+]

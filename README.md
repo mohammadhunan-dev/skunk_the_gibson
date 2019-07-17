@@ -5,9 +5,8 @@ skunk the gibson repo
 # Getting Started:
  * clone the repo and cd into it
  * Set up mongodb
-    * Create data directory `mkdir data`
-    * Create log directory `mkdir log` file
-    * Create log/mongod.log
+    * Create directories for mongod: `mkdir data && mkdir log`
+    * Create log file for mongod: `touch log/mongod.log`
     * Start mongod the included conf file `mongod -f m.conf`
  * run `pip install -r requirements.txt` from root of the repo
  * run `export FLASK_APP=app.py` from root of the repo
