@@ -1,6 +1,6 @@
 from flask import Flask, request, send_from_directory, render_template, json
 # from flask_pymongo import PyMongo
-import PyMongo
+import PyMongo 
 import json 
 
 app = Flask(__name__,  static_url_path='/views', static_folder="static")
@@ -55,7 +55,6 @@ def collection_data():
     collection_list = [] 
 
     for coll in collection_names: 
-
         coll_data = {
             "name": coll, 
             "count": db[coll].count() 
@@ -65,17 +64,21 @@ def collection_data():
 
     collections_dict = {"collections": collection_list}
 
-    return collections_dict  
+    json_dict = json.dumps(collections_dict)
+
+    return json_dict 
 
 @app.route('/documents/', methods=['GET'])
 def document_data():
-    #data = request.data
-    #dataDict = json.loads(data)
+    data = request.data
+    dataDict = json.loads(data)
     #db = dataDict['db']
     #username = dataDict['user']
     #password = dataDict['password']
-    #collection = dataDict['collection']
-    #collectionFilter = dataDict['collectionFilter'] 
+    collection = dataDict['collection']
+    collectionFilter = dataDict['collectionFilter'] 
+
+    doc_data = db[collection].find(collectionFilter)
 
     # doc_data = [
     #     {
