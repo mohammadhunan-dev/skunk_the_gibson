@@ -1,194 +1,47 @@
 from flask import Flask, request, send_from_directory, render_template, json
-from flask_pymongo import PyMongo
+from flask_pymongo import pymongo
+from bson.json_util import dumps, loads
+from urllib import unquote
+import pprint
 import time
 
 app = Flask(__name__,  static_url_path='/views', static_folder="static")
-app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
-mongo = PyMongo(app)
+#app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
+#mongo = PyMongo(app)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def collections():
+    col_data = []
 
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client["data"]
 
-@app.route('/app/scene2')
-def scenetwo():
-    return render_template('scene2.html')
+    for name in db.list_collection_names():
+        filter_list = [x for x in db.filters.find({name: {"$exists": True}})]
+        col_data.append({
+            'name': name,
+            'color': 'steelblue',
+            'count': db[name].count(),
+            'filters': filter_list
+            })
 
-@app.route('/app/')
-def hello():
-    # activities = mongo.db.activities.find({})
-    # return render_template('index.html', activities=activities)
-   
-    #sample data -- position should be computed based on # of results
-    boxes = [{
-                'color': 'salmon',
-                'collectionName': 'pizza'
+    return render_template('index.html', data=col_data, last_updated = time.time())
 
-            },
-            {
-                'color': 'steelblue',
-                'collectionName': 'furniture'
-            },
-            {
-                'color': 'springgreen',
-                'collectionName': 'skunks'
-            }]
-
-    ts = time.time()
-    return render_template('index.html', boxes=boxes, last_updated = ts)
-
-
-@app.route('/collections/<collection_name>', methods=['POST'])
+@app.route('/collections/<collection_name>', methods=['GET'])
 def collection_data(collection_name):
-    # data = request.data
-    # dataDict = json.loads(data)
-    # db = dataDict['db']
-    # username = dataDict['user']
-    # password = dataDict['password']
+    matches = []
 
-    # return 'TODO: fetch collections and get document counts for each'
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client["data"] 
 
-    doc_data = [
-        {
-            "name": "Margherita", 
-            "toppings": ["mozzarella", "basil", "tomato sauce"],  
-            "style": "Neapolitan", 
-            "rating": 8,
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Greek", 
-            "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
-            "style": "Greek",  
-            "rating": 7.5,
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Pepperoni", 
-            "toppings": ["cheese", "tomato sauce", "pepperoni"],
-            "style": "Sicilian", 
-            "rating": 4, 
-            "vegetarian": "false"
-        },
-        {
-            "name": "Deep Dish", 
-            "toppings": ["tomato sacue", "sausage"],  
-            "style": "Chicago", 
-            "vegetarian": "false" 
-        },
-        {
-            "name": "Hawaiian", 
-            "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
-            "style": "NYC",  
-            "rating": 9, 
-            "vegetarian": "false"  
-        },
-        {
-            "name": "White", 
-            "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
-            "style": "NYC",  
-            "rating": 10, 
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Broccoli Rabe", 
-            "toppings": ["sausage", "broccoli rabe", "cheese"], 
-            "crust": "St. Louis",   
-            "rating": 1
-        },
-        {
-            "name": "Artichoke", 
-            "toppings": ["cheese", "garlic", "artichoke"], 
-            "crust": "Neapolitan", 
-            "rating": 9, 
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Vegetable", 
-            "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
-            "crust": "NYC", 
-            "rating": 8.5, 
-            "vegetarian": "true" 
-        }
-    ]
-    
-    return { "data": doc_data }
+    filter_param = request.args.get('filter')
 
-@app.route('/documents/', methods=['GET'])
-def document_data():
-    #data = request.data
-    #dataDict = json.loads(data)
-    #db = dataDict['db']
-    #username = dataDict['user']
-    #password = dataDict['password']
-    #collection = dataDict['collection']
-    #collectionFilter = dataDict['collectionFilter']
+    if filter_param is not None:
+        matching_filter = db.filters.findOne({name: unquote(filter_param)})
+        query_filter = matching_filter['query']
+        matches = [x for x in db[collection_name].find(query_filter)]
+    else:
+        matches = [x for x in db[collection_name].find()]
 
-    doc_data = [
-        {
-            "name": "Margherita", 
-            "toppings": ["mozzarella", "basil", "tomato sauce"],  
-            "style": "Neapolitan", 
-            "rating": 8,
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Greek", 
-            "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
-            "style": "Greek",  
-            "rating": 7.5,
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Pepperoni", 
-            "toppings": ["cheese", "tomato sauce", "pepperoni"],
-            "style": "Sicilian", 
-            "rating": 4, 
-            "vegetarian": "false"
-        },
-        {
-            "name": "Deep Dish", 
-            "toppings": ["tomato sauce", "sausage"],  
-            "style": "Chicago", 
-            "vegetarian": "false" 
-        },
-        {
-            "name": "Hawaiian", 
-            "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
-            "style": "NYC",  
-            "rating": 9, 
-            "vegetarian": "false"  
-        },
-        {
-            "name": "White", 
-            "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
-            "style": "NYC",  
-            "rating": 10, 
-            "vegetarian": "true" 
-        },
-        {
-            "name": "Broccoli Rabe", 
-            "toppings": ["sausage", "broccoli rabe", "cheese"], 
-            "crust": "St. Louis",   
-            "rating": 1
-        },
-        {
-            "name": "Artichoke", 
-            "toppings": ["cheese", "garlic", "artichoke"], 
-            "crust": "Neapolitan", 
-            "rating": 9, 
-            "vegetarian": "true"  
-        },
-        {
-            "name": "Vegetable", 
-            "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sauce", "cheese"], 
-            "crust": "NYC", 
-            "rating": 8.5, 
-            "vegetarian": "true" 
-        }
-    ]
-    app.logger.info(doc_data)
+    return { "data": dumps(matches) }
 
-
-    return render_template('documents.html', data=doc_data)

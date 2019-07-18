@@ -23,8 +23,8 @@ AFRAME.registerComponent('initial-scene-load-event', {
     },
 
     init: function () {
-   
-        fetch("/collections/", { method: "POST", credentials: "same-origin"}).then((response) => {
+        console.log("initial-scene-load-event init"); 
+        fetch("/", { method: "GET", credentials: "same-origin"}).then((response) => {
             response.json().then((data) => {
                 console.log(data)
             })
@@ -46,11 +46,10 @@ AFRAME.registerComponent('load-document-event', {
       this.el.setAttribute("visible",false);
       
       $('.collection-box').click((el) => { 
-        const collectionName = el.target.getAttribute("datnvalue");
-
+        const collectionName = el.target.parentEl.id;
 
         fetch("/collections/" + collectionName, {
-          method: "POST",
+          method: "GET",
           credentials: "same-origin"
         })
         .then((response) => {
@@ -93,20 +92,20 @@ const loadDocumentView = (collectionName, data) => {
     let y = 1; // y position
     let z = -1; // z position
 
-
-    data.data.forEach((document, i) => {
-      const stringified_doc = JSON.stringify(document);
+    d = JSON.parse(data.data);
+    d.forEach((doc, i) => {
+      const stringified_doc = JSON.stringify(doc);
       console.log('stringif', stringified_doc)
       const htmlDocumentString = `<a-entity id="documentid-${i}" documentdata='${stringified_doc}' class="document-box" mixin="cube" position="${x} 1 ${z}">
-      <a-text value="${document.name}"  align="center" position="0 1.3 0" side="double"></a-text>
+      <a-text value="${doc.name}"  align="center" position="0 1.3 0" side="double"></a-text>
       <a-entity mixin="doc" raycast-info></a-entity>
-      <a-text value="toppings:\n\t\t${document.toppings}\n\nstyle:\n\t\t${document.style}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
+      <a-text value="toppings:\n\t\t${doc.toppings}\n\nstyle:\n\t\t${doc.style}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
       <a-entity mixin="cube"></a-entity>
   </a-entity>`;
-      if((i + 1) % maxColumns === 0){
+      if ((i + 1) % maxColumns === 0) {
         x = -maxColumns + 1;
         z -= 2;
-      }else{
+      } else {
         x += 2;
       }
     documentWrapper.html(documentWrapper.html() + htmlDocumentString)
