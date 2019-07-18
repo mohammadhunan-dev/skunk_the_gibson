@@ -38,27 +38,40 @@ def collection_data(collection_name):
     db = client["data"] 
 
     filter_param = request.args.get('filter')
+    filter_list = [x for x in db.filters.find({ collection_name: {"$exists": True}}, { "pizza.name": 1, "_id": 0})]
 
     if filter_param is not None:
-        matches = { "data": [
-            {
-                "name": "Greek",
-                "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
-                "style": "Greek",
-                "rating": 7.5,
-                "vegetarian": True
-            }
-        ]}
-        return matches
-        # matching_filter = db.filters.findOne({ "name": unquote(filter_param)})
+        # matches = { "data": [
+        #     {
+        #         "name": "Greek",
+        #         "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+        #         "style": "Greek",
+        #         "rating": 7.5,
+        #         "vegetarian": True
+        #     }
+        # ]}
+        # return matches
+        
+        filter_list =  db.filters.aggregate([{"$match": {"pizza": {"$exists": True}}}, {"$unwind": "$pizza"}, {"$match": {"pizza.name": "Vegetarian"}}, {"$project": {"_id": 0}}])
+
+        print("=========")
+        query_str = filter_list.next()[collection_name]['query']
+        print (query_str)
+        #bar = db.pizza.find(json.dumps(foo))
+        #print(bar)
+        print("=========")
         # query_filter = matching_filter['query']
+        matches = [x for x in db[collection_name].find(query_str)]
+        print(matches)
         # matches = [x for x in db[collection_name].find(query_filter)]
     else:
         matches = [x for x in db[collection_name].find()]
 
     json_result = dumps(matches)
-    pp = pprint.PrettyPrinter(indent=4)
-
-    pp.pprint(json_result)
-
-    return { "data": json_result }
+    print(matches)
+    matches = [x for x in db[collection_name].find()]
+    print(matches)
+    # print("----")
+    # print(list(filter_list)[0][collection_name]['query'][0])
+    # foo = db.pizza.find()
+    return { "data": json_result, "filters": filter_list }
