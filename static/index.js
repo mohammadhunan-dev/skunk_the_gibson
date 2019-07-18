@@ -13,14 +13,13 @@ AFRAME.registerComponent('raycast-info', {
   init: function () {
     this.el.addEventListener('raycaster-intersected', function (evt) {
       var el = evt.target;
-// May get two intersection events per tick; same element, different faces.
       el.setAttribute('material', 'color: #333; opacity: 1.0');
     });
 
     this.el.addEventListener('raycaster-intersected-cleared', function (evt) {
       var el = evt.target;
-// May get two intersection events per tick; same element, different faces.
       el.setAttribute('material', 'color: white; opacity: 0.5');
+
     });
   }
 });
@@ -56,13 +55,15 @@ AFRAME.registerComponent('load-document-event', {
       $('.collection-box').click((el) => { 
         const collectionName = el.target.parentEl.id;
 
+        const boxColor = el.target.getAttribute("material")['color'];
+
         fetch("/collections/" + collectionName, {
           method: "GET",
           credentials: "same-origin"
         })
         .then((response) => {
           response.json().then((data) => {
-            loadDocumentView(collectionName, data);
+            loadDocumentView(collectionName, data, boxColor);
             data_store.documents = JSON.parse(data.data);
             // debugger;
 
@@ -96,7 +97,7 @@ const renderDocumentsToPage = (myData,x,z, maxColumns) => {
     documentWrapper.html(documentWrapper.html() + htmlDocumentString)
   })
 }
-const loadDocumentView = (collectionName, data) => {
+const loadDocumentView = (collectionName, data, collectionColor) => {
   $('.collection-wrapper').each((index, element) => {
     // element.setAttribute('visible',false);
     element.remove();
@@ -112,7 +113,7 @@ const loadDocumentView = (collectionName, data) => {
           wasd-controls="acceleration: 250" 
           user-height="0"
       >
-          <a-entity cursor position="0 0 1" material="color: black" raycaster="far: 2.5"></a-cursor>
+          <a-cursor raycaster="position: 0 0 1"></a-cursor>
       </a-camera>`;
   $("a-scene").append(cameraString);
 
@@ -161,7 +162,7 @@ const loadDocumentView = (collectionName, data) => {
     
     $("a-scene").append(filterGroupString);
 
-    const lightHtmlString = `<a-light type="point" color="blue" position="0 25 1"></a-light>`;
+    const lightHtmlString = `<a-light type="point" color="${collectionColor}" position="0 25 1"></a-light>`;
     $("a-scene").append(lightHtmlString)
     $('#exit-doorway').click(() => {
       window.location.href = "/";
@@ -176,7 +177,7 @@ const loadDocumentView = (collectionName, data) => {
   
 
       if(event.target.id === "filter-icon-1"){
-        $("#filter-icon-1").attr("material","color:blue")  // set filter as active
+        $("#filter-icon-1").attr("material","color:white")  // set filter as active
         $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
         $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
 
@@ -184,7 +185,7 @@ const loadDocumentView = (collectionName, data) => {
         renderDocumentsToPage(data_store.documents, x, z, maxColumns)
       }else if(event.target.id === "filter-icon-2"){
         $("#filter-icon-1").attr("material", filter_colors.filter_1); // set filter as active
-        $("#filter-icon-2").attr("material","color:blue"); // set other filter as default
+        $("#filter-icon-2").attr("material","color:white"); // set other filter as default
         $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
 
         fetch(`/collections/pizza?filter=${filterName}`).then((data) => {
@@ -199,7 +200,7 @@ const loadDocumentView = (collectionName, data) => {
       }else if(event.target.id === "filter-icon-3"){
         $("#filter-icon-1").attr("material", filter_colors.filter_1); // set filter as active
         $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
-        $("#filter-icon-3").attr("material","color:blue"); // set other filter as default
+        $("#filter-icon-3").attr("material","color:white"); // set other filter as default
 
         fetch(`/collections/pizza?filter=${filterName}`).then((data) => {
           data.json().then((response) => {
