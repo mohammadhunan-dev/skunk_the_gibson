@@ -42,7 +42,7 @@ def collection_data(collection_name):
     if filter_param is not None:
         matches = { "data": [
             {
-               "name": "Greek",
+                "name": "Greek",
                 "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
                 "style": "Greek",
                 "rating": 7.5,
