@@ -1,4 +1,6 @@
 console.log('hello from static/index.js!!' );
+
+let current_collection_name = "";
 const filter_colors = {
   filter_1: 'color: green',
   filter_2: 'color: gold',
@@ -54,6 +56,7 @@ AFRAME.registerComponent('load-document-event', {
       
       $('.collection-box').click((el) => { 
         const collectionName = el.target.parentEl.id;
+        current_collection_name = collectionName;
 
         const boxColor = el.target.getAttribute("material")['color'];
 
@@ -65,8 +68,6 @@ AFRAME.registerComponent('load-document-event', {
           response.json().then((data) => {
             loadDocumentView(collectionName, data, boxColor);
             data_store.documents = JSON.parse(data.data);
-            // debugger;
-
           })
         })
         .catch((error) => {
@@ -199,7 +200,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
         $("#filter-icon-2").attr("material","color:white"); // set other filter as default
         $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
 
-        fetch(`/collections/pizza?filter=${filterName}`).then((data) => {
+        fetch(`/collections/${current_collection_name}?filter=${filterName}`).then((data) => {
           data.json().then((response) => {
             console.log('response received', response)
             const myData = response.data;
@@ -213,7 +214,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
         $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
         $("#filter-icon-3").attr("material","color:white"); // set other filter as default
 
-        fetch(`/collections/pizza?filter=${filterName}`).then((data) => {
+        fetch(`/collections/${current_collection_name}?filter=${filterName}`).then((data) => {
           data.json().then((response) => {
             console.log('response received', response)
             const myData = response.data;

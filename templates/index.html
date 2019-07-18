@@ -51,6 +51,8 @@
                             <a-entity mixin="inner-cube wood-crate"></a-entity>
                         </a-entity>
                     </a-entity>
+                  {% else %} 
+                    <a-entity id="tesr" datavalue='{{n}}'></a-entity>
                 {% endif %}
             {% endfor %}
         </a-entity>
@@ -60,7 +62,11 @@
 
         <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 250" user-height="0"><a-cursor></a-cursor></a-camera>
 
-        <a-box id="target" box="db_a" position="-4 1 -4" rotation="0 0 0" scale="1.25 1.25 1.25" load-document-event></a-box>
+        <!-- {%for x in data %}
+        <a-entity class="weird-entity" datavalue='{{x}}'></a-entity>
+        {% endfor %} -->
+
+        <a-box id="target3" box="db_a" position="-4 1 -4" rotation="0 0 0" scale="1.25 1.25 1.25" load-document-event datavalue='{{data}}'></a-box>
     </a-scene>
 
 </body>
