@@ -8,7 +8,7 @@
     },
     {
         "name": "Greek", 
-        "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+        "toppings": ["olives", "feta", "tomatoes", "cucumber", "onion"], 
         "style": "Greek",  
         "rating": 7.5,
         "vegetarian": true 
@@ -55,7 +55,7 @@
     },
     {
         "name": "Vegetable", 
-        "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sauce", "cheese"], 
+        "toppings": ["artichoke", "mushroom", "olive", "zucchini", "eggplant", "basil", "tomato sauce", "cheese"], 
         "crust": "NYC", 
         "rating": 8.5, 
         "vegetarian": true 

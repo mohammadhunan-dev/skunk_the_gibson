@@ -44,7 +44,7 @@
         "name": "badminton", 
         "origin": "England", 
         "division": "set",
-        "equipment": ["raquet", "shuttlecock"]
+        "equipment": ["racquet", "shuttlecock"]
     },
     {
         "name": "volleyball", 

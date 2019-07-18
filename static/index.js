@@ -16,7 +16,7 @@ AFRAME.registerComponent('raycast-info', {
     this.el.addEventListener('raycaster-intersected', function (evt) {
       var el = evt.target;
 // May get two intersection events per tick; same element, different faces.
-      el.setAttribute('material', 'color: green; opacity: 1.0');
+      el.setAttribute('material', 'color: #333; opacity: 1.0');
     });
 
     this.el.addEventListener('raycaster-intersected-cleared', function (evt) {
@@ -79,13 +79,13 @@ const renderDocumentsToPage = (myData,x,z, maxColumns) => {
   const documentWrapper = $('.documents-wrapper');
 
   myData.forEach((doc, i) => {
-    const stringified_doc = JSON.stringify(doc);
+    const stringified_doc = JSON.stringify(doc, null, 4).replace(/'/g, /"/);
     console.log('stringif', stringified_doc)
-    const htmlDocumentString = `<a-entity id="documentid-${i}" documentdata='${stringified_doc}' class="document-box" mixin="cube" position="${x} 1 ${z}">
+    const htmlDocumentString = `<a-entity id="documentid-${i}" class="document-box" position="${x} 1 ${z}">
+
     <a-text value="${doc.name}"  align="center" position="0 1.3 0" side="double"></a-text>
     <a-entity mixin="doc" raycast-info></a-entity>
-    <a-text value="toppings:\n\t\t${doc.toppings}\n\nstyle:\n\t\t${doc.style}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
-    <a-entity mixin="cube"></a-entity>
+    <a-text value='${stringified_doc}' align="left" position="-0.35 0.9 0.5" side="double" height="1.2" width="0.6" baseline="top"></a-text>
 </a-entity>`;
     if ((i + 1) % maxColumns === 0) {
       x = -maxColumns + 1;
@@ -112,9 +112,9 @@ const loadDocumentView = (collectionName, data) => {
           wasd-controls="acceleration: 250" 
           user-height="0"
       >
-          <a-cursor></a-cursor>
+          <a-entity cursor position="0 0 1" material="color: black" raycaster="far: 2.5"></a-cursor>
       </a-camera>`;
-  $("a-scene").append(cameraString)
+  $("a-scene").append(cameraString);
 
   const documentWrapper = $('.documents-wrapper');
 
