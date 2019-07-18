@@ -1,5 +1,6 @@
 [
     {
+        "name": "Ikea Desk Chair", 
         "type": "desk chair",
         "dim": {"length": 22, "width": 20.5, "height": 30, "uom": "in"},
         "material": ["metal", "plastic"],
@@ -7,6 +8,7 @@
         "store": "Ikea"
     },
     {
+        "name": "Pottery Barn Table", 
         "type": "kitchen table",
         "dim": {"length": 33, "width": 40, "height": 30, "uom": "in"},
         "material": "wood",
@@ -15,6 +17,7 @@
         "store": "Pottery Barn"            
     }, 
     {
+        "name": "Pottery Barn Round Table", 
         "type": "kitchen table",
         "dim": {"diameter": 32, "height": 30, "uom": "in"},
         "material": "wood",
@@ -23,12 +26,14 @@
         "store": "Pottery Barn"            
     } , 
     {
+        "name": "Anthropologie Couch", 
         "type": "couch",
         "material": "velvet",
         "color": ["navy", "blue"], 
         "store": "Anthropologie"            
     },
     {
+        "name": "Wayfair Bed", 
         "type": "bed",
         "size": "twin", 
         "material": "wood",
@@ -37,6 +42,7 @@
         "store": "Wayfair"           
     }, 
     {
+        "name": "Ikea Bed", 
         "type": "bed",
         "size": "queen", 
         "material": "metal",
@@ -44,6 +50,7 @@
         "store": "Ikea"           
     }, 
     {
+        "name": "Pottery Barn Armchair", 
         "type": "armchair",
         "dim": {"length": 32, "height": 30, "uom": "in"},
         "material": ["twill", "wood"],
@@ -52,13 +59,15 @@
         "store": "Pottery Barn"           
     }, 
     {
+        "name": "Target Armchair", 
         "type": "armchair",
         "dim": {"diameter": 20, "width": 20 , "height": 30, "uom": "in"},
         "material": ["suede", "wood"],
         "color": ["grey"],
         "store": "Target"           
     }, 
-    {
+    {   
+        "name": "Target Coffee Table", 
         "type": "coffee table",
         "dim": {"diameter": 32, "height": 24, "uom": "in"},
         "material": ["metal"],
@@ -67,10 +76,11 @@
         "store": "Target"           
     },
     {
+        "name": "Target Bed", 
         "type": "bed",
         "size": "queen", 
         "material": ["wood"],
-        "color": "white"          
-    }
-        
+        "color": "white", 
+        "store": "Target"         
+    }      
 ]
