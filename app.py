@@ -50,7 +50,9 @@ def hello():
 
 @app.route('/collections/<collection_name>/filter/<filter_name>', methods=["POST"])
 def getFilteredCol(collection_name,filter_name):
-    doc_data = [
+    doc_data = []
+    if(collection_name == "Pizza" and filter_name == "findAll"): 
+        doc_data = {"data": [
             {
                 "name": "Margherita", 
                 "toppings": ["mozzarella", "basil", "tomato sauce"],  
@@ -113,28 +115,102 @@ def getFilteredCol(collection_name,filter_name):
                 "vegetarian": "true" 
             }
         ]
-
-    filters =  [ 
-    { 
-        "name": "Vegetarian", 
-        "query": {"vegetarian": True}
-    }, 
-    {
-        "name": "Highly Rated", 
-        "query": {"rating": {"$gte": 7}}
-    }, 
-    {
-        "name": "Cheese and Tomoato Sauce", 
-        "query": {"toppings": {"$all": ["cheese", "tomato sauce"]}}} 
-    ]
-    query = {}
-    filter_name = "Vegetarian"
-    for filter in filters:
-        if(filter['name'] == filter_name):
-            query = filter['query']
-            
-    return mock_filteration(doc_data, query)
-
+        }
+        return doc_data
+    elif(collection_name == "Pizza" and filter_name == "Vegetarian"): 
+        doc_data = { "data": [
+            {
+                "name": "Margherita", 
+                "toppings": ["mozzarella", "basil", "tomato sauce"],  
+                "style": "Neapolitan", 
+                "rating": 8,
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Greek", 
+                "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+                "style": "Greek",  
+                "rating": 7.5,
+                "vegetarian": "true" 
+            },
+            {
+                "name": "White", 
+                "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
+                "style": "NYC",  
+                "rating": 10, 
+                "vegetarian": "true" 
+            },
+            {
+                "name": "Broccoli Rabe", 
+                "toppings": ["sausage", "broccoli rabe", "cheese"], 
+                "crust": "St. Louis",   
+                "rating": 1
+            },
+            {
+                "name": "Artichoke", 
+                "toppings": ["cheese", "garlic", "artichoke"], 
+                "crust": "Neapolitan", 
+                "rating": 9, 
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Vegetable", 
+                "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+                "crust": "NYC", 
+                "rating": 8.5, 
+                "vegetarian": "true" 
+            }
+        ]
+        }
+        return doc_data
+    elif(collection_name == "Pizza" and filter_name == "Highly Rated"):
+        doc_data = {"data":[
+            {
+                "name": "Margherita", 
+                "toppings": ["mozzarella", "basil", "tomato sauce"],  
+                "style": "Neapolitan", 
+                "rating": 8,
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Greek", 
+                "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+                "style": "Greek",  
+                "rating": 7.5,
+                "vegetarian": "true" 
+            },
+            {
+                "name": "Hawaiian", 
+                "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
+                "style": "NYC",  
+                "rating": 9, 
+                "vegetarian": "false"  
+            },
+            {
+                "name": "White", 
+                "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
+                "style": "NYC",  
+                "rating": 10, 
+                "vegetarian": "true" 
+            },
+            {
+                "name": "Artichoke", 
+                "toppings": ["cheese", "garlic", "artichoke"], 
+                "crust": "Neapolitan", 
+                "rating": 9, 
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Vegetable", 
+                "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+                "crust": "NYC", 
+                "rating": 8.5, 
+                "vegetarian": "true" 
+            }
+        ]}       
+        return doc_data 
+    else:
+        return {"data": doc_data}
 
 @app.route('/collections/<collection_name>', methods=['POST'])
 def collection_data(collection_name):
