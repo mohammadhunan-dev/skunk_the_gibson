@@ -64,14 +64,13 @@ def collection_data(collection_name):
         matches = [x for x in db[collection_name].find(query_str)]
         print(matches)
         # matches = [x for x in db[collection_name].find(query_filter)]
+        return { "data": dumps(matches)}
     else:
         matches = [x for x in db[collection_name].find()]
 
-    json_result = dumps(matches)
-    print(matches)
-    matches = [x for x in db[collection_name].find()]
-    print(matches)
-    # print("----")
-    # print(list(filter_list)[0][collection_name]['query'][0])
-    # foo = db.pizza.find()
-    return { "data": json_result, "filters": filter_list }
+        json_result = dumps(matches)
+
+        # print("----")
+        # print(list(filter_list)[0][collection_name]['query'][0])
+        # foo = db.pizza.find()
+        return { "data": json_result, "filters": filter_list }
