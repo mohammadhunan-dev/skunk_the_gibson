@@ -33,44 +33,27 @@ def collections():
 @app.route('/collections/<collection_name>', methods=['GET'])
 def collection_data(collection_name):
     matches = []
+    json_result = {}
 
     client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client["data"] 
 
     filter_param = request.args.get('filter')
-    filter_list = [x for x in db.filters.find({ collection_name: {"$exists": True}}, { "pizza.name": 1, "_id": 0})]
+    filter_list = dumps([x for x in db.filters.find({ collection_name: {"$exists": True}}) ])
 
     if filter_param is not None:
-        # matches = { "data": [
-        #     {
-        #         "name": "Greek",
-        #         "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
-        #         "style": "Greek",
-        #         "rating": 7.5,
-        #         "vegetarian": True
-        #     }
-        # ]}
-        # return matches
+        col_key = '${}'.format(collection_name)
+        col_sub = '{}.name'.format(collection_name)
         
-        filter_list =  db.filters.aggregate([{"$match": {"pizza": {"$exists": True}}}, {"$unwind": "$pizza"}, {"$match": {"pizza.name": "Vegetarian"}}, {"$project": {"_id": 0}}])
+        agg_result =  db.filters.aggregate([{"$match": {collection_name: {"$exists": True}}}, {"$unwind": col_key}, {"$match": {col_sub: filter_param}}, {"$project": {"_id": 0}}])
 
-        print("=========")
-        query_str = filter_list.next()[collection_name]['query']
-        print (query_str)
-        #bar = db.pizza.find(json.dumps(foo))
-        #print(bar)
-        print("=========")
-        # query_filter = matching_filter['query']
+        query_str = agg_result.next()[collection_name]['query']
         matches = [x for x in db[collection_name].find(query_str)]
-        print(matches)
-        # matches = [x for x in db[collection_name].find(query_filter)]
-        return { "data": dumps(matches)}
-    else:
-        matches = [x for x in db[collection_name].find()]
-
         json_result = dumps(matches)
 
-        # print("----")
-        # print(list(filter_list)[0][collection_name]['query'][0])
-        # foo = db.pizza.find()
-        return { "data": json_result, "filters": filter_list }
+    else:
+        matches = [x for x in db[collection_name].find()]
+        json_result = dumps(matches)
+
+
+    return { "data": json_result, "filters": filter_list }
