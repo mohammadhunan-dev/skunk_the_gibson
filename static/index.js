@@ -76,26 +76,37 @@ AFRAME.registerComponent('load-document-event', {
   
     }
   });
-const renderDocumentsToPage = (myData,x,z, maxColumns) => {
-  const documentWrapper = $('.documents-wrapper');
+const renderDocumentsToPage = (myData, x, z, maxColumns) => {
+    const documentWrapper = $('.documents-wrapper');
 
-  myData.forEach((doc, i) => {
-    const stringified_doc = JSON.stringify(doc, null, 4).replace(/'/g, /"/);
-    console.log('stringif', stringified_doc)
-    const htmlDocumentString = `<a-entity id="documentid-${i}" class="document-box" position="${x} 1 ${z}">
+    let documentString = `<a-entity id="matching-documents"  position="-4 -3 4" animation="property: position; to: -4 1 4; dur: 1500; easeIn: easeInCubic">`;
 
-    <a-text value="${doc.name}"  align="center" position="0 1.3 0" side="double"></a-text>
-    <a-entity mixin="doc" raycast-info></a-entity>
-    <a-text value='${stringified_doc}' align="left" position="-0.35 0.9 0.5" side="double" height="1.2" width="0.6" baseline="top"></a-text>
-</a-entity>`;
-    if ((i + 1) % maxColumns === 0) {
-      x = -maxColumns + 1;
-      z -= 2;
+    if (myData.length === 0) {
+        documentString += `<a-text align="center" position="-1 1 0" scale="2 2 2" side="double" value="No matching documents!"></a-text>`;
     } else {
-      x += 2;
+
+        myData.forEach((doc, i) => {
+            const stringified_doc = JSON.stringify(doc, null, 4).replace(/'/g, /"/);
+            //console.log('stringif', stringified_doc)
+            const htmlDocumentString = `
+                <a-entity id="documentid-${i}" position="${x} 0 ${z}">
+                    <a-text value="${doc.name}" align="center" position="0 1.3 0" side="double"></a-text>
+                    <a-entity mixin="doc" raycast-info></a-entity>
+                    <a-text value='${stringified_doc}' align="left" position="-0.35 0.9 0.5" side="double" height="1.3" width="0.7" baseline="top"></a-text>
+                </a-entity>`;
+            if ((i + 1) % maxColumns === 0) {
+                x = -maxColumns + 1;
+                z -= 2;
+            } else {
+                x += 2;
+            }
+            documentString += htmlDocumentString;
+        });
     }
-    documentWrapper.html(documentWrapper.html() + htmlDocumentString)
-  })
+
+    documentString += `</a-entity>`;
+    documentWrapper.html(documentString);
+
 }
 const loadDocumentView = (collectionName, data, collectionColor) => {
   $('.collection-wrapper').each((index, element) => {
@@ -108,7 +119,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
   $("#collectioncamera").remove();
   const cameraString = `
       <a-camera id="documentcamera" 
-          position="-3 2.8 8" 
+          position="-4 2.8 6" 
           look-controls 
           wasd-controls="acceleration: 250" 
           user-height="0"
@@ -129,7 +140,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
     renderDocumentsToPage(d, x, z, maxColumns);
 
     const exitDoorHtmlString = `
-    <a-entity id="exit-doorway"  position="7 0 ${z - 4}" rotation="0 320 0">
+    <a-entity id="exit-doorway"  position="7 0 ${z - 7}" rotation="0 320 0">
             <a-entity gltf-model="#door" scale="1.5 1.5 1.5" animation-mixer="clip: *;"></a-entity>
             <a-text position="-2 3.5 0.8" scale="2.2 2.2 2.2"  value="EXIT COLLECTION" side="double"></a-text>
 
@@ -143,21 +154,21 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
     $("a-scene").append(exitDoorHtmlString);
 
     const filterGroupString = `
-    <a-entity id="filter-group" position="-7 6 0">
-    <a-entity id="filter-1" class="filteration-group">
-      <a-entity id="filter-icon-1" datavalue="all" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_1}"></a-entity>
-      <a-text value="all" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
-    </a-entity>
-    <a-entity id="filter-2" position="3 0 0" class="filteration-group">
-      <a-entity id="filter-icon-2" datavalue="Vegetarian"  mixin="filter" rotation="180 0 0" material="${filter_colors.filter_2}"></a-entity>
-      <a-text value="Vegetarian" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
-    </a-entity>
-    <a-entity id="filter-3" position="6 0 0" class="filteration-group">
-      <a-entity id="filter-icon-3" datavalue="$gte 6 stars" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_3}"></a-entity>
-      <a-text value="$gte 6 stars" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
-    </a-entity>
-  </a-entity>
-    `;
+        <a-entity id="filter-group" position="-7 5 -1">
+            <a-entity id="filter-1" class="filteration-group">
+                <a-entity id="filter-icon-1" datavalue="all" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_1}"></a-entity>
+                <a-text value="all" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
+            </a-entity>
+            <a-entity id="filter-2" position="3 0 0" class="filteration-group">
+                <a-entity id="filter-icon-2" datavalue="Vegetarian"  mixin="filter" rotation="180 0 0" material="${filter_colors.filter_2}"></a-entity>
+                <a-text value="Vegetarian" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
+            </a-entity>
+            <a-entity id="filter-3" position="6 0 0" class="filteration-group">
+                <a-entity id="filter-icon-3" datavalue="$gte 6 stars" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_3}"></a-entity>
+                <a-text value="$gte 6 stars" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
+              </a-entity>
+        </a-entity>
+        `;
 
     
     $("a-scene").append(filterGroupString);
