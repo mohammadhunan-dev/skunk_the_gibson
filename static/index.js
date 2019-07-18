@@ -125,23 +125,6 @@ const loadDocumentView = (collectionName, data) => {
     let z = -1; // z position
 
     d = JSON.parse(data.data);
-  //   d.forEach((doc, i) => {
-  //     const stringified_doc = JSON.stringify(doc);
-  //     console.log('stringif', stringified_doc)
-  //     const htmlDocumentString = `<a-entity id="documentid-${i}" documentdata='${stringified_doc}' class="document-box" mixin="cube" position="${x} 1 ${z}">
-  //     <a-text value="${doc.name}"  align="center" position="0 1.3 0" side="double"></a-text>
-  //     <a-entity mixin="doc" raycast-info></a-entity>
-  //     <a-text value="toppings:\n\t\t${doc.toppings}\n\nstyle:\n\t\t${doc.style}\n" align="left" position="-0.35 0.8 0.5" side="double" height="1.2" width="0.6" tabSize="4"></a-text>
-  //     <a-entity mixin="cube"></a-entity>
-  // </a-entity>`;
-      // if ((i + 1) % maxColumns === 0) {
-      //   x = -maxColumns + 1;
-      //   z -= 2;
-      // } else {
-      //   x += 2;
-      // }
-    // documentWrapper.html(documentWrapper.html() + htmlDocumentString)
-    // })
     renderDocumentsToPage(d, x, z, maxColumns);
 
     const exitDoorHtmlString = `
@@ -180,7 +163,9 @@ const loadDocumentView = (collectionName, data) => {
 
     const lightHtmlString = `<a-light type="point" color="blue" position="0 25 1"></a-light>`;
     $("a-scene").append(lightHtmlString)
-
+    $('#exit-doorway').click(() => {
+      window.location.href = "/";
+    })
     $(".filteration-group").click((event)=>{
       const documentWrapper = $('.documents-wrapper');
       const filterName = event.target.getAttribute("datavalue");
@@ -232,6 +217,7 @@ const loadDocumentView = (collectionName, data) => {
 
 const loadCollectionView = () => { 
   // switch back to collection view
+
 }
 
 const generateDoor = () => {
