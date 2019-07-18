@@ -131,16 +131,16 @@ const loadDocumentView = (collectionName, data) => {
     const filterGroupString = `
     <a-entity id="filter-group" position="-7 6 0">
     <a-entity id="filter-1">
-      <a-entity mixin="filter" rotation="180 0 0" material="color: green"></a-entity>
+      <a-entity mixin="filter" rotation="180 0 0" material="color: violet"></a-entity>
       <a-text value="all" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
     </a-entity>
 
     <a-entity id="filter-2" position="3 0 0">>
-      <a-entity mixin="filter" rotation="180 0 0" material="color: gold"></a-entity>
+      <a-entity mixin="filter" rotation="180 0 0" material="color: peachpuff"></a-entity>
       <a-text value="cheese" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
     </a-entity>
     <a-entity id="filter-3" position="6 0 0">
-      <a-entity mixin="filter" rotation="180 0 0" material="color: red"></a-entity>
+      <a-entity mixin="filter" rotation="180 0 0" material="color: dodgerblue"></a-entity>
       <a-text value="$gte 6 stars" scale="1.5 1.5 1.5" side="double" position="0 1.2 0" align="center"></a-text>
     </a-entity>
   </a-entity>
