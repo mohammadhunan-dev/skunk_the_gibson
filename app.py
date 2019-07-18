@@ -40,9 +40,19 @@ def collection_data(collection_name):
     filter_param = request.args.get('filter')
 
     if filter_param is not None:
-        matching_filter = db.filters.findOne({name: unquote(filter_param)})
-        query_filter = matching_filter['query']
-        matches = [x for x in db[collection_name].find(query_filter)]
+        matches = { "data": [
+            {
+               "name": "Greek",
+                "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+                "style": "Greek",
+                "rating": 7.5,
+                "vegetarian": True
+            }
+        ]}
+        return matches
+        # matching_filter = db.filters.findOne({ "name": unquote(filter_param)})
+        # query_filter = matching_filter['query']
+        # matches = [x for x in db[collection_name].find(query_filter)]
     else:
         matches = [x for x in db[collection_name].find()]
 
