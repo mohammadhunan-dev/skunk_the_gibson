@@ -32,6 +32,10 @@ AFRAME.registerComponent('initial-scene-load-event', {
     }
   });
 
+// renders modal with document's data fields
+AFRAME.registerComponent('document-modal', {
+
+});
 
 AFRAME.registerComponent('load-document-event', {
     schema: { },
@@ -94,7 +98,6 @@ const loadDocumentView = (collectionName, data) => {
     data.data.forEach((document, i) => {
       const stringified_doc = JSON.stringify(document);
       console.log('stringif', stringified_doc)
-
       const htmlDocumentString = `<a-entity id="documentid-${i}" documentdata='${stringified_doc}' class="document-box" mixin="cube" position="${x} 1 ${z}">
       <a-text value="${document.name}"  align="center" position="0 1.3 0" side="double"></a-text>
       <a-entity mixin="doc" raycast-info></a-entity>
