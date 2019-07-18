@@ -11,6 +11,7 @@ skunk the gibson repo
  * run `pip install -r requirements.txt` from root of the repo
  * run `export FLASK_APP=app.py` from root of the repo
  * run `flask run` from root of the repo
+ * import the data; for each file: `mongoimport --drop -d <db name> data -c <collection name> --jsonArray --file json_data/<file>`
  * go to http://127.0.0.1:5000/app/ to view the app
 
 
