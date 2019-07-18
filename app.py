@@ -17,10 +17,13 @@ def collections():
     db = client["data"]
 
     for name in db.list_collection_names():
+        if name == "filters":
+            continue
+
+        app.logger.info("name: %s" % name)
         filter_list = [x for x in db.filters.find({name: {"$exists": True}})]
         col_data.append({
             'name': name,
-            'color': 'steelblue',
             'count': db[name].count(),
             'filters': filter_list
             })
@@ -43,5 +46,9 @@ def collection_data(collection_name):
     else:
         matches = [x for x in db[collection_name].find()]
 
-    return { "data": dumps(matches) }
+    json_result = dumps(matches)
+    pp = pprint.PrettyPrinter(indent=4)
 
+    pp.pprint(json_result)
+
+    return { "data": json_result }

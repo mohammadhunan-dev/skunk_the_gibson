@@ -39,35 +39,28 @@
           <a-entity gltf-model="#skunk" scale="0.3 0.3 0.3" position="0 0 -8"></a-entity>
         </a-entity>
 
+        {% set ns = namespace(colors = ["maroon", "steelblue", "springgreen", "gold", "violet", "coral", "peachpuff", "dodgerblue"]) %}
         {% set leftPos = (-1 * data|length) + 1 %}
         <a-entity class="collection-wrapper">
             {% for n in data %}
-
-            <a-entity position="{{ leftPos + (2 * loop.index0) }} 1.5 -4">
-              <a-text value="{{ n['name'] }}" position="-0.5 1.0 0" side="double"></a-text>
-              <a-entity id="{{ n['name'] }}" mixin="y-anim" class="collection-box">
-                <a-entity mixin="outer-cube" material="color: {{n['color']}}"></a-entity>
-                <a-entity mixin="inner-cube wood-crate"></a-entity>
-            </a-entity>
-            </a-entity>
+                {% if "{{n['name']}" != "filters" %} 
+                    <a-entity position="{{ leftPos + (2 * loop.index0) }} 1.5 -4">
+                      <a-text value="{{ n['name'] }}\ncount:{{ n['count'] }}" position="-0.5 1.0 0" side="double"></a-text>
+                        <a-entity id="{{ n['name'] }}" mixin="y-anim" class="collection-box">
+                            <a-entity mixin="outer-cube" material="color: {{ ns.colors[loop.index0] }}"></a-entity>
+                            <a-entity mixin="inner-cube wood-crate"></a-entity>
+                        </a-entity>
+                    </a-entity>
+                {% endif %}
             {% endfor %}
         </a-entity>
         
         {% set leftPos = (-1 * data|length) + 1 %}
-        <a-entity position="{{ leftPos + 2 }} 1 -4" class="documents-wrapper">
-            
-        </a-entity>
+        <a-entity position="{{ leftPos + 2 }} 1 -4" class="documents-wrapper"></a-entity>
 
-        <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 200" user-height="0"><a-cursor></a-cursor></a-camera>
+        <a-camera position="0 1.5 0" look-controls wasd-controls="acceleration: 250" user-height="0"><a-cursor></a-cursor></a-camera>
 
-
-
-        <a-box id="target" box="db_a" position="-4 1 -4" rotation="0 0 0"
-        scale="1.25 1.25 1.25" load-document-event></a-box>
-        
-
-        <a-light id="collectionlight" type="directional" color="white" position="0 25 0" rotation="-90 0 0" intensity="0.3"></a-light>
-        <a-camera id="collectioncamera" position="0 1.5 0" look-controls wasd-controls="acceleration: 200" user-height="0"></a-camera>
+        <a-box id="target" box="db_a" position="-4 1 -4" rotation="0 0 0" scale="1.25 1.25 1.25" load-document-event></a-box>
     </a-scene>
 
 </body>
