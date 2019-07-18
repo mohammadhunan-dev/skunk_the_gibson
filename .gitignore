@@ -2,11 +2,18 @@
 /__pycache__/
 *.py[cod]
 
+#OS X files
+.DS_Store
+
 # python dependencies
 /venv/
 
 
 # extras
-data/*
-log/*
+/data/
+/log/
+/data/*
+/log/*
 *.swp
+
+
