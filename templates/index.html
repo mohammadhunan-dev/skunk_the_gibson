@@ -40,18 +40,18 @@
         </a-entity>
 
         {% set ns = namespace(colors = ["maroon", "steelblue", "springgreen", "gold", "violet", "coral", "peachpuff", "dodgerblue"]) %}
-
         {% set leftPos = (-1 * data|length) + 1 %}
         <a-entity class="collection-wrapper">
             {% for n in data %}
-
-            <a-entity position="{{ leftPos + (2 * loop.index0) }} 1.5 -4">
-              <a-text value="{{ n['name'] }}" position="-0.5 1.0 0" side="double"></a-text>
-              <a-entity id="{{ n['name'] }}" mixin="y-anim" class="collection-box">
-                <a-entity mixin="outer-cube" material="color: {{ ns.colors[loop.index0] }}"></a-entity>
-                <a-entity mixin="inner-cube wood-crate"></a-entity>
-            </a-entity>
-            </a-entity>
+                {% if "{{n['name']}" != "filters" %} 
+                    <a-entity position="{{ leftPos + (2 * loop.index0) }} 1.5 -4">
+                      <a-text value="{{ n['name'] }}\ncount:{{ n['count'] }}" position="-0.5 1.0 0" side="double"></a-text>
+                        <a-entity id="{{ n['name'] }}" mixin="y-anim" class="collection-box">
+                            <a-entity mixin="outer-cube" material="color: {{ ns.colors[loop.index0] }}"></a-entity>
+                            <a-entity mixin="inner-cube wood-crate"></a-entity>
+                        </a-entity>
+                    </a-entity>
+                {% endif %}
             {% endfor %}
         </a-entity>
         

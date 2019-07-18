@@ -17,6 +17,10 @@ def collections():
     db = client["data"]
 
     for name in db.list_collection_names():
+        if name == "filters":
+            continue
+
+        app.logger.info("name: %s" % name)
         filter_list = [x for x in db.filters.find({name: {"$exists": True}})]
         col_data.append({
             'name': name,
