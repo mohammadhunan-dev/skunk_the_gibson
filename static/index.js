@@ -77,6 +77,7 @@ const loadDocumentView = (collectionName, data) => {
     look-controls="pointerLockEnabled: true" 
     wasd-controls="acceleration:200"
     >
+    <a-cursor></a-cursor>
   </a-entity>
 </a-entity>`;
   $("a-scene").append(cameraString)
@@ -124,6 +125,11 @@ const loadDocumentView = (collectionName, data) => {
     </a-entity>`;
     $("a-scene").append(exitDoorHtmlString);
 
+    $('#exit-doorway').click(()=> {
+      console.log('abc')
+      window.location.href = "/app";
+    })
+
     const filterGroupString = `
     <a-entity id="filter-group" position="-7 6 0">
     <a-entity id="filter-1">
@@ -152,6 +158,7 @@ const loadDocumentView = (collectionName, data) => {
 
 const loadCollectionView = () => { 
   // switch back to collection view
+  
 }
 
 const generateDoor = () => {

@@ -6,6 +6,16 @@ app = Flask(__name__,  static_url_path='/views', static_folder="static")
 app.config["MONGO_URI"] = "mongodb://localhost:27017/skunkWorks_db"
 mongo = PyMongo(app)
 
+def mock_filteration(data, query):
+  return_data = []
+  for item in data:
+    query_key = (list(query.keys())[0])
+    query_val = query[query_key]
+    item_val = item[query_key]
+    if(item_val == query_val):
+        return_data.append(item)
+  return return_data
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -37,6 +47,93 @@ def hello():
 
     ts = time.time()
     return render_template('index.html', boxes=boxes, last_updated = ts)
+
+@app.route('/collections/<collection_name>/filter/<filter_name>', methods=["POST"])
+def getFilteredCol(collection_name,filter_name):
+    doc_data = [
+            {
+                "name": "Margherita", 
+                "toppings": ["mozzarella", "basil", "tomato sauce"],  
+                "style": "Neapolitan", 
+                "rating": 8,
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Greek", 
+                "toppings": ["olives", "feta", "tomatoes", "cucmber", "onion"], 
+                "style": "Greek",  
+                "rating": 7.5,
+                "vegetarian": "true" 
+            },
+            {
+                "name": "Pepperoni", 
+                "toppings": ["cheese", "tomato sauce", "pepperoni"],
+                "style": "Sicilian", 
+                "rating": 4, 
+                "vegetarian": "false"
+            },
+            {
+                "name": "Deep Dish", 
+                "toppings": ["tomato sacue", "sausage"],  
+                "style": "Chicago", 
+                "vegetarian": "false" 
+            },
+            {
+                "name": "Hawaiian", 
+                "toppings": ["pineapple", "ham", "cheese", "tomato sauce"],
+                "style": "NYC",  
+                "rating": 9, 
+                "vegetarian": "false"  
+            },
+            {
+                "name": "White", 
+                "toppings": ["ricotta", "parmesan", "mozzarella", "garlic", "sage"], 
+                "style": "NYC",  
+                "rating": 10, 
+                "vegetarian": "true" 
+            },
+            {
+                "name": "Broccoli Rabe", 
+                "toppings": ["sausage", "broccoli rabe", "cheese"], 
+                "crust": "St. Louis",   
+                "rating": 1
+            },
+            {
+                "name": "Artichoke", 
+                "toppings": ["cheese", "garlic", "artichoke"], 
+                "crust": "Neapolitan", 
+                "rating": 9, 
+                "vegetarian": "true"  
+            },
+            {
+                "name": "Vegetable", 
+                "toppings": ["artichoke", "mushroom", "olive", "zuchinni", "eggplant", "basil", "tomato sacue", "cheese"], 
+                "crust": "NYC", 
+                "rating": 8.5, 
+                "vegetarian": "true" 
+            }
+        ]
+
+    filters =  [ 
+    { 
+        "name": "Vegetarian", 
+        "query": {"vegetarian": True}
+    }, 
+    {
+        "name": "Highly Rated", 
+        "query": {"rating": {"$gte": 7}}
+    }, 
+    {
+        "name": "Cheese and Tomoato Sauce", 
+        "query": {"toppings": {"$all": ["cheese", "tomato sauce"]}}} 
+    ]
+    query = {}
+    filter_name = "Vegetarian"
+    for filter in filters:
+        if(filter['name'] == filter_name):
+            query = filter['query']
+            
+    return mock_filteration(doc_data, query)
 
 
 @app.route('/collections/<collection_name>', methods=['POST'])
@@ -115,7 +212,7 @@ def collection_data(collection_name):
     
     return { "data": doc_data }
 
-@app.route('/documents/', methods=['GET'])
+@app.route('/documents/<collectname>', methods=['GET'])
 def document_data():
     #data = request.data
     #dataDict = json.loads(data)
