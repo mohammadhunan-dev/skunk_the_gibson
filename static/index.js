@@ -6,13 +6,13 @@ AFRAME.registerComponent('raycast-info', {
     this.el.addEventListener('raycaster-intersected', function (evt) {
       var el = evt.target;
 // May get two intersection events per tick; same element, different faces.
-      el.setAttribute('material', 'color', '#7f7');
+      el.setAttribute('material', 'color: green; opacity: 1.0');
     });
 
     this.el.addEventListener('raycaster-intersected-cleared', function (evt) {
       var el = evt.target;
 // May get two intersection events per tick; same element, different faces.
-      el.setAttribute('material', 'color', 'white');
+      el.setAttribute('material', 'color: white; opacity: 0.5');
     });
   }
 });
@@ -75,13 +75,15 @@ const loadDocumentView = (collectionName, data) => {
   $('#skunkwrap').remove();
   $("#collectionlight").remove();
   $("#collectioncamera").remove();
-  const cameraString = `<a-entity id="documentcamera" movement-controls="fly: true" position="-3 3 4">
-  <a-entity camera position="0 1 4" 
-    look-controls="pointerLockEnabled: true" 
-    wasd-controls="acceleration:200"
-    >
-  </a-entity>
-</a-entity>`;
+  const cameraString = `
+      <a-camera id="documentcamera" 
+          position="-3 2.8 8" 
+          look-controls 
+          wasd-controls="acceleration: 250" 
+          user-height="0"
+      >
+          <a-cursor></a-cursor>
+      </a-camera>`;
   $("a-scene").append(cameraString)
 
   const documentWrapper = $('.documents-wrapper');
