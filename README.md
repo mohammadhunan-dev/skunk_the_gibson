@@ -1,8 +1,11 @@
 # skunk_the_gibson
 Skunkworks July 2019 project
 
+
 julia.oppenheim@mongodb.com
+
 mohammed.hunan@mongodb.com
+
 chris.cho@mongodb.com
 
 # Description:
