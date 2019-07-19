@@ -98,7 +98,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
   $("#collectioncamera").remove();
   const cameraString = `
       <a-camera id="documentcamera" 
-          position="-4 2.8 6" 
+          position="-4 2.8 5" 
           look-controls 
           wasd-controls="acceleration: 250" 
           user-height="0"
