@@ -21,7 +21,7 @@ def collections():
             continue
 
         app.logger.info("name: %s" % name)
-        filter_list = [x for x in db.filters.find({name: {"$exists": True}})]
+        filter_list = [x for x in db.filters.find({name: {"$exists": True}}).limit(50)]
         col_data.append({
             'name': name,
             'count': db[name].count(),
@@ -48,11 +48,11 @@ def collection_data(collection_name):
         agg_result =  db.filters.aggregate([{"$match": {collection_name: {"$exists": True}}}, {"$unwind": col_key}, {"$match": {col_sub: filter_param}}, {"$project": {"_id": 0}}])
 
         query_str = agg_result.next()[collection_name]['query']
-        matches = [x for x in db[collection_name].find(query_str)]
+        matches = [x for x in db[collection_name].find(query_str).limit(50)]
         json_result = dumps(matches)
 
     else:
-        matches = [x for x in db[collection_name].find()]
+        matches = [x for x in db[collection_name].find().limit(50)]
         json_result = dumps(matches)
 
 

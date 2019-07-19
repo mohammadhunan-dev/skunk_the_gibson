@@ -6,11 +6,7 @@
                 "query": {"vegetarian": true}
             }, 
             {
-                "name": "Highly Rated", 
-                "query": {"rating": {"$gte": 7}}
-            }, 
-            {
-                "name": "Cheese and Tomoato Sauce", 
+                "name": "Cheese and Tomato Sauce", 
                 "query": {"toppings": {"$all": ["cheese", "tomato sauce"]}}
             } 
         ]
@@ -20,10 +16,6 @@
             { 
                 "name": "Not Kitchen Tables", 
                 "query": {"type": {"$ne": "kitchen table"}}
-            }, 
-            {
-                "name": "Has Dimensions", 
-                "query": {"dim": {"$exists": true}}
             }, 
             {
                 "name": "No Metal or Twill", 
@@ -38,12 +30,8 @@
                 "query": {"origin": "USA" }
             }, 
             {
-                "name": "Minimal Equipment", 
-                "query": {"equipment": {"$size": 2}}
-            }, 
-            {
-                "name": "Not Founded in US or England", 
-                "query": {"origin": {"$nin": ["USA", "England"]}}
+                "name": "No Bat or Racquet", 
+                "query": {"equipment": {"$nin": ["bat", "racquet"]}}
             } 
         ]
     }
