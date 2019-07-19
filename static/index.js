@@ -140,7 +140,9 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
     let y = 1; // y position
     let z = -1; // z position
     d = JSON.parse(data.data);
-    let filters = data.filters[0][current_collection_name];
+
+  
+    let filters = JSON.parse(data.filters)[0][current_collection_name];
     console.log('heres my data', d)
     console.log('heres my filters', filters)
     renderDocumentsToPage(d, x, z, maxColumns);
