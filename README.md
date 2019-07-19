@@ -22,12 +22,12 @@ VR browser for MongoDB databases. Explore data by navigating through collections
  * run `pip install -r requirements.txt` from root of the repo
  * run `export FLASK_APP=app.py` from root of the repo
  * run `flask run` from root of the repo
- * import the data; for each file: `mongoimport --drop -d <db name> data -c <collection name> --jsonArray --file json_data/<file>`
+ * import the mongo document data with the script `import.sh`
  * go to http://localhost:5000/ to view the app
 
 
 # Project Structure:
- * `rootDir/templates` stores html templates
- * `rootDir/static` contains all of our front end js (for instance DOM Manipulation) and css
- * `rootDir/app.py` is the main python application for this project
- * `rootDir/requirements.txt` is the python dependency file for our project
+ * `<project root>/templates` stores html templates
+ * `<project root>/static` contains all of our front end js (for instance DOM Manipulation) and css
+ * `<project root>/app.py` is the main python application for this project
+ * `<project root>/requirements.txt` is the python dependency file for our project
