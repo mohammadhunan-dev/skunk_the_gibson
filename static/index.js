@@ -4,7 +4,9 @@ let current_collection_name = "";
 const filter_colors = {
   filter_1: 'color: green',
   filter_2: 'color: gold',
-  filter_3: 'color: red'
+  filter_3: 'color: red',
+  filter_4: 'color: pink',
+  filter_5: 'color: yellow',
 }
 
 const data_store = {
@@ -66,6 +68,7 @@ AFRAME.registerComponent('load-document-event', {
         })
         .then((response) => {
           response.json().then((data) => {
+            console.log("RESPONSE FROM COLLECTIONS ")
             loadDocumentView(collectionName, data, boxColor);
             data_store.documents = JSON.parse(data.data);
           })
@@ -136,8 +139,10 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
     let x = -1 * maxColumns + 1; // x position
     let y = 1; // y position
     let z = -1; // z position
-
     d = JSON.parse(data.data);
+    let filters = data.filters[0][current_collection_name];
+    console.log('heres my data', d)
+    console.log('heres my filters', filters)
     renderDocumentsToPage(d, x, z, maxColumns);
 
     const exitDoorHtmlString = `
@@ -153,6 +158,27 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
         </a-entity>
     </a-entity>`;
     $("a-scene").append(exitDoorHtmlString);
+  
+    let filterNames = filters.map((filter) => filter.name);
+
+    let filtersHTMLString = ``;
+    let basePos = 3;
+
+    filters.forEach((filter, i) => {
+      const aParentEntityID = `filter-${i + 2}`;
+      const filterIconID = `filter-icon-${i + 2}`;
+      const aEntityColourIndex = `filter_${i + 2}`;
+      filtersHTMLString += `<a-entity id="${aParentEntityID}" position="${basePos} 0 0" class="filteration-group">
+      <a-entity id="${filterIconID}" datavalue="${filter.name}"  mixin="filter" rotation="180 0 0" material="${filter_colors[aEntityColourIndex]}"></a-entity>
+      <a-text value="${filter.name}" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
+  </a-entity>`;
+      basePos += 3;
+    })
+
+    console.log('============ FILTERS STRING INCOMING ===================')
+    console.log(filtersHTMLString)
+
+
 
     const filterGroupString = `
         <a-entity id="filter-group" position="-7 5 -1">
@@ -160,14 +186,7 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
                 <a-entity id="filter-icon-1" datavalue="all" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_1}"></a-entity>
                 <a-text value="all" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
             </a-entity>
-            <a-entity id="filter-2" position="3 0 0" class="filteration-group">
-                <a-entity id="filter-icon-2" datavalue="Vegetarian"  mixin="filter" rotation="180 0 0" material="${filter_colors.filter_2}"></a-entity>
-                <a-text value="Vegetarian" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
-            </a-entity>
-            <a-entity id="filter-3" position="6 0 0" class="filteration-group">
-                <a-entity id="filter-icon-3" datavalue="$gte 6 stars" mixin="filter" rotation="180 0 0" material="${filter_colors.filter_3}"></a-entity>
-                <a-text value="$gte 6 stars" scale="1.5 1.5 1.5" side="double" position="0 -0.2 1" align="center"></a-text>
-              </a-entity>
+           ${filtersHTMLString}
         </a-entity>
         `;
 
@@ -180,18 +199,20 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
       window.location.href = "/";
     })
     $(".filteration-group").click((event)=>{
+      console.log('filteration gROUP CLICKED!!', event.target, event.target.id)
       const documentWrapper = $('.documents-wrapper');
       const filterName = event.target.getAttribute("datavalue");
       const maxColumns = 5;
-      let x = -1 * maxColumns + 1; // x position
-      let y = 1; // y position
-      let z = -1; // z position
+      const x = -1 * maxColumns + 1; // x position
+      const y = 1; // y position
+      const z = -1; // z position
   
 
       if(event.target.id === "filter-icon-1"){
         $("#filter-icon-1").attr("material","color:white")  // set filter as active
         $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
         $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
+        $("#filter-icon-4").attr("material", filter_colors.filter_4); // set other filter as default
 
         documentWrapper.html('') // set scene to have no documents 
         renderDocumentsToPage(data_store.documents, x, z, maxColumns)
@@ -199,40 +220,44 @@ const loadDocumentView = (collectionName, data, collectionColor) => {
         $("#filter-icon-1").attr("material", filter_colors.filter_1); // set filter as active
         $("#filter-icon-2").attr("material","color:white"); // set other filter as default
         $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
+        $("#filter-icon-4").attr("material", filter_colors.filter_4); // set other filter as default
+        requestFilteredDocuments(filterName)
 
-        fetch(`/collections/${current_collection_name}?filter=${filterName}`).then((data) => {
-          data.json().then((response) => {
-            console.log('response received', response)
-            const myData = response.data;
-            documentWrapper.html('') // set scene to have no documents 
-            renderDocumentsToPage(myData, x, z, maxColumns)
-
-          })
-        })
       }else if(event.target.id === "filter-icon-3"){
         $("#filter-icon-1").attr("material", filter_colors.filter_1); // set filter as active
         $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
         $("#filter-icon-3").attr("material","color:white"); // set other filter as default
+        $("#filter-icon-4").attr("material", filter_colors.filter_4); // set other filter as default
 
-        fetch(`/collections/${current_collection_name}?filter=${filterName}`).then((data) => {
-          data.json().then((response) => {
-            console.log('response received', response)
-            const myData = response.data;
-            documentWrapper.html('') // set scene to have no documents 
-            renderDocumentsToPage(myData, x, z, maxColumns)
+        requestFilteredDocuments(filterName)
 
-          })
-        })
+      }else if(event.target.id === "filter-icon-4"){
+        $("#filter-icon-1").attr("material", filter_colors.filter_1); // set filter as active
+        $("#filter-icon-2").attr("material", filter_colors.filter_2); // set other filter as default
+        $("#filter-icon-3").attr("material", filter_colors.filter_3); // set other filter as default
+        $("#filter-icon-4").attr("material", "color:white"); // set other filter as default
+
+        requestFilteredDocuments(filterName)
+
       }
     })
-
 }
 
-const loadCollectionView = () => { 
-  // switch back to collection view
 
+async function requestFilteredDocuments(filterName){
+  const documentWrapper = $('.documents-wrapper');
+  const maxColumns = 5;
+  const x = -1 * maxColumns + 1; // x position
+  const y = 1; // y position
+  const z = -1; // z position
+  await fetch(`/collections/${current_collection_name}?filter=${filterName}`).then((res) => {
+    res.json().then((response) => {
+      const myData = JSON.parse(response.data);
+      documentWrapper.html('') // set scene to have no documents 
+      renderDocumentsToPage(myData, x, z, maxColumns)
+    })
+
+  })
 }
 
-const generateDoor = () => {
 
-}
